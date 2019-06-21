@@ -1,8 +1,8 @@
+import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {withRouter, Route, Switch} from 'react-router-dom'
-import PropTypes from 'prop-types'
-import {Login, Signup, UserHome} from './components'
+import {Route, Switch, withRouter} from 'react-router-dom'
+import {Login, Signup, UserHome, VideoCall} from './components'
 import {me} from './store'
 
 /**
@@ -25,6 +25,7 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
+            <Route path="/call" component={VideoCall} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
