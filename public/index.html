@@ -8,25 +8,12 @@
   <link rel="stylesheet" href="/style.css" />
   <script defer src="/bundle.js"></script>
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
 </head>
 
 <body>
   <h1>Welcome to Face Chat</h1>
-  <div id="login">
-    <label for="username">Login</label>
-    <input id="username" placeholder="Login" required="" autofocus="">
-    <button id="login">Login</button>
-  </div>
-  <div id="call">
-    <video id="local" autoplay></video>
-    <video id="remote" autoplay></video>
-  </div>
-  <div>
-    <input id="username-to-call" placeholder="Username to call" />
-    <button id="call">Call</button>
-    <button id="close-call">Close Call</button>
-  </div>
-  <!-- <div id="app"></div> -->
+  <div id="app"></div>
 </body>
 
 </html>
