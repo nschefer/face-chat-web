@@ -4,6 +4,6 @@
  * having to figure out which file they belong to!
  */
 export {Login, Signup} from './AuthForm'
-// export { default as Navbar } from './Navbar';
+export {default as Navbar} from './Navbar'
 export {default as UserHome} from './UserHome'
 export {default as VideoCall} from './VideoCall'
