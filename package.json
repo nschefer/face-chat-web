@@ -53,6 +53,10 @@
     "morgan": "^1.9.1",
     "opentok-accelerator-core": "^2.0.15",
     "opentok-solutions-css": "0.0.43",
+    "opentok-annotation": "*",
+    "opentok-archiving": "*",
+    "opentok-screen-sharing": ">=1.0.28",
+    "opentok-text-chat": "*",
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
     "pg": "^7.9.0",
@@ -62,11 +66,13 @@
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.1",
     "react-router-dom": "^5.0.0",
+    "react-spinner": "^0.2.6",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "sequelize": "^5.3.1",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "babel-polyfill": "^6.23.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
@@ -87,6 +93,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "chai": "^4.2.0",
+    "css-loader": "^3.0.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "eslint": "^5.16.0",

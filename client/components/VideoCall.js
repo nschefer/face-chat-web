@@ -12,13 +12,14 @@ const otCoreOptions = {
     sessionId: config.sessionId,
     token: config.token
   },
+  //which jsx(html) elements will hold your video
   streamContainers(pubSub, type, data, stream) {
     return {
       publisher: {
         camera: '#publisherContainer'
       },
       subscriber: {
-        camera: '#subcriberContainer'
+        camera: '#subscriberContainer'
       }
     }[pubSub][type]
   },
@@ -32,6 +33,8 @@ const containerClasses = state => {
   const activeCameraSubscribersGt2 = activeCameraSubscribers > 2
   const activeCameraSubscribersOdd = activeCameraSubscribers % 2
   return {
+    //create dynamic classnames to interact with video controls and changes in video
+    //classnames api allow control over classname depending on state
     controlClass: classNames('App-control-container', {hidden: !active}),
     localAudioClass: classNames('ots-video-control circle audio', {
       hidden: !active,
@@ -84,10 +87,10 @@ export default class VideoCall extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     otCore = new AccCore(otCoreOptions)
     otCore.connect().then(() => this.setState({connected: true}))
-    const events = ['subscribe', 'unsubscribe']
+    const events = ['subscribeToCamera', 'unsubscribeFromCamera']
 
     events.forEach(event =>
       otCore.on(event, ({publishers, subscribers, meta}) => {
@@ -96,7 +99,7 @@ export default class VideoCall extends Component {
     )
   }
 
-  startCall() {
+  startCall = () => {
     otCore
       .startCall()
       .then(({publishers, subscribers, meta}) => {
@@ -105,22 +108,22 @@ export default class VideoCall extends Component {
       .catch(error => console.log('Start call experienced an error', error))
   }
 
-  endCall() {
+  endCall = () => {
     otCore.endCall()
     this.setState({active: false})
   }
 
-  toggleLocalAudio() {
+  toggleLocalAudio = () => {
     otCore.toggleLocalAudio(!this.state.localAudioEnabled)
     this.setState({localAudioEnabled: !this.state.localAudioEnabled})
   }
 
-  toggleLocalVideo() {
+  toggleLocalVideo = () => {
     otCore.toggleLocalVideo(!this.state.localVideoEnabled)
     this.setState({localVideoEnabled: !this.state.localVideoEnabled})
   }
 
-  render() {
+  render = () => {
     const {connected, active} = this.state
     const {
       localAudioClass,
