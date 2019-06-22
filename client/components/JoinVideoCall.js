@@ -1,3 +1,4 @@
+import axios from 'axios'
 import classNames from 'classnames'
 import AccCore from 'opentok-accelerator-core'
 import 'opentok-solutions-css'
@@ -9,8 +10,8 @@ let otCore
 const otCoreOptions = {
   credentials: {
     apiKey: config.apiKey,
-    sessionId: config.sessionId,
-    token: config.token
+    sessionId: '',
+    token: ''
   },
   //which jsx(html) elements will hold your video
   streamContainers(pubSub, type, data, stream) {
@@ -60,6 +61,16 @@ const containerClasses = state => {
   }
 }
 
+const enterUser = (onChange, submit, value) => (
+  <div className="App-mask">
+    <label htmlFor="userToCall">Enter User To Call</label>
+    <input type="text" name="userToCall" value={value} onChange={onChange} />
+    <button type="submit" className="message button clickable" onClick={submit}>
+      Submit
+    </button>
+  </div>
+)
+
 const connecting = () => (
   <div className="App-mask">
     <div className="message with-spinner">Connecting</div>
@@ -83,11 +94,36 @@ export default class JoinVideoCall extends Component {
       subscribers: null,
       meta: null,
       localAudioEnabled: true,
-      localVideoEnabled: true
+      localVideoEnabled: true,
+      userToCall: ''
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount() {}
+
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
+  submitUser = async event => {
+    event.preventDefault()
+
+    const email = this.state.userToCall
+    console.log('Email: ', email)
+
+    const {data} = await axios.get(`/api/ot/id/${email}`)
+
+    const userId = data.id
+    console.log('UserId: ', userId)
+
+    const credentials = await axios.get(`/api/ot/token/${userId}`)
+
+    const {id, token} = credentials.data
+    otCoreOptions.credentials.sessionId = id
+    otCoreOptions.credentials.token = token
+
     otCore = new AccCore(otCoreOptions)
     otCore.connect().then(() => this.setState({connected: true}))
     const events = ['subscribeToCamera', 'unsubscribeFromCamera']
@@ -139,6 +175,12 @@ export default class JoinVideoCall extends Component {
         <h1>This is where you will make your video call</h1>
         <div className="App-main">
           <div className="App-video-container">
+            {!connected &&
+              enterUser(
+                this.handleChange,
+                this.submitUser,
+                this.state.userToCall
+              )}
             {!connected && connecting()}
             {connected && !active && startCallPrompt(this.startCall)}
             <div id="publisherContainer" className={cameraPublisherClass} />

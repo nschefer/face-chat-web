@@ -14,7 +14,6 @@ router.post('/', (req, res, next) => {
       console.error(err)
     } else if (req.user) {
       try {
-        console.log('Session Id: ', session.sessionId)
         //create session in db
         await OTSession.create({
           sessionId: session.sessionId,
@@ -30,19 +29,50 @@ router.post('/', (req, res, next) => {
   })
 })
 
-//Sends sessionId and token to client for connection to session
+//Sends token to call creator
 router.get('/', async (req, res, next) => {
-  let userId = req.user.id
-  if (req.body.id) userId = req.body.id
-
   try {
     const session = await OTSession.findOne({
       where: {
-        userId: userId
+        userId: req.user.id
       }
     })
 
-    console.log('Session Id in the get route:', session.sessionId)
+    const token = opentok.generateToken(session.sessionId)
+
+    res.json({
+      id: session.sessionId,
+      token: token
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/id/:email', async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        email: req.params.email
+      },
+      attributes: ['id']
+    })
+    res.json(user)
+  } catch (error) {
+    console.error(error)
+    next(error)
+  }
+})
+
+router.get('/token/:id', async (req, res, next) => {
+  try {
+    console.log('Req.params: ', req.params)
+
+    const session = await OTSession.findOne({
+      where: {
+        userId: req.params.id
+      }
+    })
 
     const token = opentok.generateToken(session.sessionId)
 
