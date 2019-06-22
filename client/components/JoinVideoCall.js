@@ -64,7 +64,13 @@ const containerClasses = state => {
 const enterUser = (onChange, submit, value) => (
   <div className="App-mask">
     <label htmlFor="userToCall">Enter User To Call</label>
-    <input type="text" name="userToCall" value={value} onChange={onChange} />
+    <input
+      id="user-to-call"
+      type="text"
+      name="userToCall"
+      value={value}
+      onChange={onChange}
+    />
     <button type="submit" className="message button clickable" onClick={submit}>
       Submit
     </button>
@@ -95,11 +101,10 @@ export default class JoinVideoCall extends Component {
       meta: null,
       localAudioEnabled: true,
       localVideoEnabled: true,
-      userToCall: ''
+      userToCall: '',
+      userSubmitted: false
     }
   }
-
-  componentDidMount() {}
 
   handleChange = event => {
     this.setState({
@@ -123,6 +128,12 @@ export default class JoinVideoCall extends Component {
     const {id, token} = credentials.data
     otCoreOptions.credentials.sessionId = id
     otCoreOptions.credentials.token = token
+
+    //reset input and switch userSubmitted
+    this.setState({
+      userToCall: '',
+      userSubmitted: true
+    })
 
     otCore = new AccCore(otCoreOptions)
     otCore.connect().then(() => this.setState({connected: true}))
@@ -160,7 +171,7 @@ export default class JoinVideoCall extends Component {
   }
 
   render = () => {
-    const {connected, active} = this.state
+    const {connected, active, userSubmitted} = this.state
     const {
       localAudioClass,
       localVideoClass,
@@ -176,12 +187,13 @@ export default class JoinVideoCall extends Component {
         <div className="App-main">
           <div className="App-video-container">
             {!connected &&
+              !userSubmitted &&
               enterUser(
                 this.handleChange,
                 this.submitUser,
                 this.state.userToCall
               )}
-            {!connected && connecting()}
+            {!connected && userSubmitted && connecting()}
             {connected && !active && startCallPrompt(this.startCall)}
             <div id="publisherContainer" className={cameraPublisherClass} />
             <div id="subscriberContainer" className={cameraSubscriberClass} />

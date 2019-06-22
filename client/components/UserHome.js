@@ -1,19 +1,47 @@
+import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
 import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-/**
- * COMPONENT
- */
+const useStyles = {
+  button: {
+    margin: 20
+  },
+  root: {
+    flexGrow: 1
+  }
+}
+
 export const UserHome = props => {
   const {email} = props
+  const classes = useStyles
 
   return (
-    <div>
-      <h3>Welcome, {email}</h3>
-      <Link to="/startcall">Start Video Call</Link>
-      <Link to="/joincall">Join Video Call</Link>
+    <div className={classes.root}>
+      <Container maxWidth="xs">
+        <h1>Welcome to Face-Chat</h1>
+        <h3>Welcome, {email}</h3>
+        <Button
+          variant="contained"
+          component={Link}
+          to="/startcall"
+          className={classes.button}
+          color="primary"
+        >
+          Start Video Call
+        </Button>
+        <Button
+          variant="contained"
+          component={Link}
+          to="/joincall"
+          className={classes.button}
+          color="primary"
+        >
+          Join Video Call
+        </Button>
+      </Container>
     </div>
   )
 }

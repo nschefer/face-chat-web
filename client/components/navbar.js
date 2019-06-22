@@ -1,3 +1,5 @@
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
@@ -6,25 +8,28 @@ import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
-    <h1>FACE-CHAT</h1>
-    <nav>
+    <div>
       {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
+        <ButtonGroup fullWidth>
+          <Button component={Link} to="/home">
+            Home
+          </Button>
+          <Button href="#" onClick={handleClick}>
             Logout
-          </a>
-        </div>
+          </Button>
+        </ButtonGroup>
       ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
+        <ButtonGroup fullWidth>
+          <Button component={Link} to="/login">
+            Login
+          </Button>
+          <Button component={Link} to="/signup">
+            Signup
+          </Button>
+        </ButtonGroup>
       )}
-    </nav>
-    <hr />
+    </div>
+    {/* <hr /> */}
   </div>
 )
 

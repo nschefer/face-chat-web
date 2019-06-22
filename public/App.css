@@ -101,6 +101,7 @@ body {
   color: white;
   background: rgba(27, 134, 144, 0.4);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -189,4 +190,8 @@ body {
   .video-container.active-gt2.active-odd
   .OT_subscriber:first-child {
   flex-basis: 100%;
+}
+
+#user-to-call {
+  margin: 10px;
 }
