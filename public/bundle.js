@@ -545,19 +545,29 @@ Navbar.propTypes = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return StartVideoCall; });
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var opentok_accelerator_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! opentok-accelerator-core */ "./node_modules/opentok-accelerator-core/dist/core.js");
-/* harmony import */ var opentok_accelerator_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(opentok_accelerator_core__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var opentok_solutions_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! opentok-solutions-css */ "./node_modules/opentok-solutions-css/style.css");
-/* harmony import */ var opentok_solutions_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(opentok_solutions_css__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _config_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../config.json */ "./config.json");
-var _config_json__WEBPACK_IMPORTED_MODULE_4___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../../config.json */ "./config.json", 1);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var opentok_accelerator_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! opentok-accelerator-core */ "./node_modules/opentok-accelerator-core/dist/core.js");
+/* harmony import */ var opentok_accelerator_core__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(opentok_accelerator_core__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var opentok_solutions_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! opentok-solutions-css */ "./node_modules/opentok-solutions-css/style.css");
+/* harmony import */ var opentok_solutions_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(opentok_solutions_css__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _config_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../config.json */ "./config.json");
+var _config_json__WEBPACK_IMPORTED_MODULE_5___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../../config.json */ "./config.json", 1);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
@@ -575,14 +585,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
  //options and where to render media
 
 var otCore;
 var otCoreOptions = {
   credentials: {
-    apiKey: _config_json__WEBPACK_IMPORTED_MODULE_4__.apiKey,
-    sessionId: _config_json__WEBPACK_IMPORTED_MODULE_4__.sessionId,
-    token: _config_json__WEBPACK_IMPORTED_MODULE_4__.token
+    apiKey: _config_json__WEBPACK_IMPORTED_MODULE_5__.apiKey,
+    sessionId: '',
+    token: ''
   },
   //which jsx(html) elements will hold your video
   streamContainers: function streamContainers(pubSub, type, data, stream) {
@@ -610,25 +621,25 @@ var containerClasses = function containerClasses(state) {
   return {
     //create dynamic classnames to interact with video controls and changes in video
     //classnames api allow control over classname depending on state
-    controlClass: classnames__WEBPACK_IMPORTED_MODULE_0___default()('App-control-container', {
+    controlClass: classnames__WEBPACK_IMPORTED_MODULE_1___default()('App-control-container', {
       hidden: !active
     }),
-    localAudioClass: classnames__WEBPACK_IMPORTED_MODULE_0___default()('ots-video-control circle audio', {
+    localAudioClass: classnames__WEBPACK_IMPORTED_MODULE_1___default()('ots-video-control circle audio', {
       hidden: !active,
       muted: !localAudioEnabled
     }),
-    localVideoClass: classnames__WEBPACK_IMPORTED_MODULE_0___default()('ots-video-control circle video', {
+    localVideoClass: classnames__WEBPACK_IMPORTED_MODULE_1___default()('ots-video-control circle video', {
       hidden: !active,
       muted: !localVideoEnabled
     }),
-    localCallClass: classnames__WEBPACK_IMPORTED_MODULE_0___default()('ots-video-control circle end-call', {
+    localCallClass: classnames__WEBPACK_IMPORTED_MODULE_1___default()('ots-video-control circle end-call', {
       hidden: !active
     }),
-    cameraPublisherClass: classnames__WEBPACK_IMPORTED_MODULE_0___default()('video-container', {
+    cameraPublisherClass: classnames__WEBPACK_IMPORTED_MODULE_1___default()('video-container', {
       hidden: !active,
       small: !!activeCameraSubscribers
     }),
-    cameraSubscriberClass: classnames__WEBPACK_IMPORTED_MODULE_0___default()('video-container', {
+    cameraSubscriberClass: classnames__WEBPACK_IMPORTED_MODULE_1___default()('video-container', {
       hidden: !active || !activeCameraSubscribers
     }, {
       'active-gt2': activeCameraSubscribersGt2
@@ -639,17 +650,17 @@ var containerClasses = function containerClasses(state) {
 };
 
 var connecting = function connecting() {
-  return react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+  return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
     className: "App-mask"
-  }, react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
     className: "message with-spinner"
   }, "Connecting"));
 };
 
 var startCallPrompt = function startCallPrompt(start) {
-  return react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+  return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
     className: "App-mask"
-  }, react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("button", {
+  }, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("button", {
     type: "button",
     className: "message button clickable",
     onClick: start
@@ -668,34 +679,11 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(StartVideoCall).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_this), "componentDidMount", function () {
-      otCore = new opentok_accelerator_core__WEBPACK_IMPORTED_MODULE_1___default.a(otCoreOptions);
-      otCore.connect().then(function () {
-        return _this.setState({
-          connected: true
-        });
-      });
-      var events = ['subscribeToCamera', 'unsubscribeFromCamera'];
-      events.forEach(function (event) {
-        return otCore.on(event, function (_ref) {
-          var publishers = _ref.publishers,
-              subscribers = _ref.subscribers,
-              meta = _ref.meta;
-
-          _this.setState({
-            publishers: publishers,
-            subscribers: subscribers,
-            meta: meta
-          });
-        });
-      });
-    });
-
     _defineProperty(_assertThisInitialized(_this), "startCall", function () {
-      otCore.startCall().then(function (_ref2) {
-        var publishers = _ref2.publishers,
-            subscribers = _ref2.subscribers,
-            meta = _ref2.meta;
+      otCore.startCall().then(function (_ref) {
+        var publishers = _ref.publishers,
+            subscribers = _ref.subscribers,
+            meta = _ref.meta;
 
         _this.setState({
           publishers: publishers,
@@ -745,28 +733,28 @@ function (_Component) {
           cameraPublisherClass = _containerClasses.cameraPublisherClass,
           cameraSubscriberClass = _containerClasses.cameraSubscriberClass;
 
-      return react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         className: "App"
-      }, react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("h1", null, "This is where you will make your video call"), react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("h1", null, "This is where you will make your video call"), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         className: "App-main"
-      }, react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         className: "App-video-container"
-      }, !connected && connecting(), connected && !active && startCallPrompt(_this.startCall), react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      }, !connected && connecting(), connected && !active && startCallPrompt(_this.startCall), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         id: "publisherContainer",
         className: cameraPublisherClass
-      }), react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      }), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         id: "subscriberContainer",
         className: cameraSubscriberClass
-      })), react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      })), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         id: "controls",
         className: controlClass
-      }, react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         className: localAudioClass,
         onClick: _this.toggleLocalAudio
-      }), react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      }), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         className: localVideoClass,
         onClick: _this.toggleLocalVideo
-      }), react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("div", {
+      }), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         className: localCallClass,
         onClick: _this.endCall
       }))));
@@ -784,8 +772,73 @@ function (_Component) {
     return _this;
   }
 
+  _createClass(StartVideoCall, [{
+    key: "componentDidMount",
+    value: function () {
+      var _componentDidMount = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var _this2 = this;
+
+        var _ref2, data, id, token, events;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/ot');
+
+              case 2:
+                _context.next = 4;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/ot');
+
+              case 4:
+                _ref2 = _context.sent;
+                data = _ref2.data;
+                //reassign otCore options
+                id = data.id, token = data.token;
+                otCoreOptions.credentials.sessionId = id;
+                otCoreOptions.credentials.token = token;
+                otCore = new opentok_accelerator_core__WEBPACK_IMPORTED_MODULE_2___default.a(otCoreOptions);
+                otCore.connect().then(function () {
+                  return _this2.setState({
+                    connected: true
+                  });
+                });
+                events = ['subscribeToCamera', 'unsubscribeFromCamera'];
+                events.forEach(function (event) {
+                  return otCore.on(event, function (_ref3) {
+                    var publishers = _ref3.publishers,
+                        subscribers = _ref3.subscribers,
+                        meta = _ref3.meta;
+
+                    _this2.setState({
+                      publishers: publishers,
+                      subscribers: subscribers,
+                      meta: meta
+                    });
+                  });
+                });
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function componentDidMount() {
+        return _componentDidMount.apply(this, arguments);
+      }
+
+      return componentDidMount;
+    }()
+  }]);
+
   return StartVideoCall;
-}(react__WEBPACK_IMPORTED_MODULE_3__["Component"]);
+}(react__WEBPACK_IMPORTED_MODULE_4__["Component"]);
 
 
 

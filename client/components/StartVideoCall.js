@@ -1,3 +1,4 @@
+import axios from 'axios'
 import classNames from 'classnames'
 import AccCore from 'opentok-accelerator-core'
 import 'opentok-solutions-css'
@@ -9,8 +10,8 @@ let otCore
 const otCoreOptions = {
   credentials: {
     apiKey: config.apiKey,
-    sessionId: config.sessionId,
-    token: config.token
+    sessionId: '',
+    token: ''
   },
   //which jsx(html) elements will hold your video
   streamContainers(pubSub, type, data, stream) {
@@ -87,7 +88,16 @@ export default class StartVideoCall extends Component {
     }
   }
 
-  componentDidMount = () => {
+  async componentDidMount() {
+    //create session
+    await axios.post('/api/ot')
+    //get session id and token
+    const {data} = await axios.get('/api/ot')
+    //reassign otCore options
+    const {id, token} = data
+    otCoreOptions.credentials.sessionId = id
+    otCoreOptions.credentials.token = token
+
     otCore = new AccCore(otCoreOptions)
     otCore.connect().then(() => this.setState({connected: true}))
     const events = ['subscribeToCamera', 'unsubscribeFromCamera']

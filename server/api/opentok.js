@@ -14,9 +14,10 @@ router.post('/', (req, res, next) => {
       console.error(err)
     } else if (req.user) {
       try {
+        console.log('Session Id: ', session.sessionId)
         //create session in db
         await OTSession.create({
-          sessionId: session.id,
+          sessionId: session.sessionId,
           userId: req.user.id
         })
         res.sendStatus(201)
@@ -31,21 +32,17 @@ router.post('/', (req, res, next) => {
 
 //Sends sessionId and token to client for connection to session
 router.get('/', async (req, res, next) => {
-  let userEmail = req.user.email
-  if (req.body.email) userEmail = req.body.email
+  let userId = req.user.id
+  if (req.body.id) userId = req.body.id
 
   try {
     const session = await OTSession.findOne({
-      include: [
-        {
-          model: User,
-          attriburtes: ['email']
-        }
-      ],
       where: {
-        email: userEmail
+        userId: userId
       }
     })
+
+    console.log('Session Id in the get route:', session.sessionId)
 
     const token = opentok.generateToken(session.sessionId)
 
