@@ -73,7 +73,7 @@ const startCallPrompt = start => (
     </button>
   </div>
 )
-export default class VideoCall extends Component {
+export default class JoinVideoCall extends Component {
   constructor(props) {
     super(props)
     this.state = {
