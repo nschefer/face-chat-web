@@ -1,13 +1,10 @@
 body {
   font-family: sans-serif;
+  background-color: #b0bec5;
 }
 
 a {
   text-decoration: none;
-}
-
-label {
-  display: block;
 }
 
 nav a {
@@ -15,10 +12,10 @@ nav a {
   margin: 1em;
 }
 
-form div {
+/* form div {
   margin: 1em;
   display: inline-block;
-}
+} */
 
 #navbar-container {
   display: flex;
@@ -29,4 +26,11 @@ form div {
 #navbar {
   display: flex;
   justify-content: space-around;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(27, 134, 144, 0.4) inset !important;
 }

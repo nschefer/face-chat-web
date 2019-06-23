@@ -1,3 +1,6 @@
+import InputAdornment from '@material-ui/core/InputAdornment'
+import TextField from '@material-ui/core/TextField'
+import PhoneCallback from '@material-ui/icons/PhoneCallback'
 import axios from 'axios'
 import classNames from 'classnames'
 import AccCore from 'opentok-accelerator-core'
@@ -61,15 +64,25 @@ const containerClasses = state => {
   }
 }
 
-const enterUser = (onChange, submit, value) => (
+const enterUser = (onChange, submit, value, className) => (
   <div className="App-mask">
-    <label htmlFor="userToCall">Enter User To Call</label>
-    <input
-      id="user-to-call"
-      type="text"
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      id="userToCall"
+      label="Enter User To Call"
       name="userToCall"
+      placeholder="user-to-call@email.com"
       value={value}
       onChange={onChange}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <PhoneCallback />
+          </InputAdornment>
+        )
+      }}
     />
     <button type="submit" className="message button clickable" onClick={submit}>
       Submit
@@ -93,6 +106,7 @@ const startCallPrompt = start => (
 export default class JoinVideoCall extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
       connected: false,
       active: false,
@@ -146,6 +160,10 @@ export default class JoinVideoCall extends Component {
     )
   }
 
+  componentWillUnmount() {
+    if (this.state.active) otCore.endCall()
+  }
+
   startCall = () => {
     otCore
       .startCall()
@@ -158,6 +176,10 @@ export default class JoinVideoCall extends Component {
   endCall = () => {
     otCore.endCall()
     this.setState({active: false})
+
+    const {history} = this.props
+
+    history.push('/home')
   }
 
   toggleLocalAudio = () => {
@@ -183,7 +205,6 @@ export default class JoinVideoCall extends Component {
 
     return (
       <div className="App">
-        <h1>This is where you will make your video call</h1>
         <div className="App-main">
           <div className="App-video-container">
             {!connected &&

@@ -1,35 +1,102 @@
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
+import {makeStyles} from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined'
+import PropTypes from 'prop-types'
 import React from 'react'
 import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
 import {auth} from '../store'
 
-/**
- * COMPONENT
- */
+const useStyles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1)
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2)
+  },
+  buttonContainer: {
+    margin: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  }
+}))
+
 const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
+  const classes = useStyles()
 
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
-        <div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
+      <Container component="main" maxWidth="sm">
+        {/* <CssBaseline /> */}
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h1" align="center">
+            Face-Chat
+          </Typography>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            {displayName}
+          </Typography>
+          <form onSubmit={handleSubmit} name={name} className={classes.form}>
+            <div>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="password"
+                label="Password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+              />
+            </div>
+            <div className={classes.buttonContainer}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                {displayName}
+              </Button>
+              {error && error.response && <div> {error.response.data} </div>}
+              <Button className={classes.submit} color="primary">
+                <a href="/auth/google">{displayName} with Google</a>
+              </Button>
+            </div>
+          </form>
         </div>
-        <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
-        {error && error.response && <div> {error.response.data} </div>}
-      </form>
-      <a href="/auth/google">{displayName} with Google</a>
+      </Container>
     </div>
   )
 }

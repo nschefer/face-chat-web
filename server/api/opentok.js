@@ -17,7 +17,7 @@ router.post('/', (req, res, next) => {
         //create session in db
         await OTSession.create({
           sessionId: session.sessionId,
-          userId: req.user.id
+          userId: req.body.id
         })
         res.sendStatus(201)
       } catch (error) {
@@ -80,6 +80,19 @@ router.get('/token/:id', async (req, res, next) => {
       id: session.sessionId,
       token: token
     })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await OTSession.destroy({
+      where: {
+        sessionId: req.params.id
+      }
+    })
+    res.sendStatus(204)
   } catch (error) {
     next(error)
   }

@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import AccCore from 'opentok-accelerator-core'
 import 'opentok-solutions-css'
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import config from '../../config.json'
 
 //options and where to render media
@@ -74,7 +75,7 @@ const startCallPrompt = start => (
     </button>
   </div>
 )
-export default class StartVideoCall extends Component {
+class StartVideoCall extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -90,7 +91,7 @@ export default class StartVideoCall extends Component {
 
   async componentDidMount() {
     //create session
-    await axios.post('/api/ot')
+    await axios.post('/api/ot', {id: this.props.userId})
     //get session id and token
     const {data} = await axios.get('/api/ot')
     //reassign otCore options
@@ -109,6 +110,11 @@ export default class StartVideoCall extends Component {
     )
   }
 
+  async componentWillUnmount() {
+    otCore.endCall()
+    await axios.delete(`/api/ot/${otCoreOptions.credentials.sessionId}`)
+  }
+
   startCall = () => {
     otCore
       .startCall()
@@ -118,9 +124,14 @@ export default class StartVideoCall extends Component {
       .catch(error => console.log('Start call experienced an error', error))
   }
 
-  endCall = () => {
+  endCall = async () => {
     otCore.endCall()
+    await axios.delete(`/api/ot/${otCoreOptions.credentials.sessionId}`)
     this.setState({active: false})
+
+    const {history} = this.props
+
+    history.push('/home')
   }
 
   toggleLocalAudio = () => {
@@ -146,7 +157,6 @@ export default class StartVideoCall extends Component {
 
     return (
       <div className="App">
-        <h1>This is where you will make your video call</h1>
         <div className="App-main">
           <div className="App-video-container">
             {!connected && connecting()}
@@ -164,3 +174,9 @@ export default class StartVideoCall extends Component {
     )
   }
 }
+
+const mapState = state => ({
+  userId: state.user.id
+})
+
+export default connect(mapState)(StartVideoCall)
