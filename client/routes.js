@@ -24,7 +24,7 @@ class Routes extends Component {
     const {isLoggedIn} = this.props
 
     return (
-      <Container>
+      <Container maxWidth={false}>
         <Switch>
           {/* Routes placed here are available to all visitors */}
           <Route path="/login" component={Login} />
